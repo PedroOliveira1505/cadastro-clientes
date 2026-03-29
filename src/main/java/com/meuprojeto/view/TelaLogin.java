@@ -1,34 +1,52 @@
 package com.meuprojeto.view;
 
-import com.meuprojeto.dao.UsuarioDAO;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
+
+import com.meuprojeto.dao.UsuarioDAO;
 
 public class TelaLogin extends JFrame {
 
     private static final Color COR_PRIMARIA = new Color(63, 81, 181);
-    private static final Color COR_FUNDO    = new Color(245, 245, 250);
-    private static final Color COR_LABEL    = new Color(90, 90, 120);
-    private static final Color COR_TEXTO    = new Color(33, 33, 33);
+    private static final Color COR_FUNDO = new Color(245, 245, 250);
+    private static final Color COR_LABEL = new Color(90, 90, 120);
+    private static final Color COR_TEXTO = new Color(33, 33, 33);
 
-    private JTextField     txtUsuario;
+    private JTextField txtUsuario;
     private JPasswordField txtSenha;
-    private UsuarioDAO     dao = new UsuarioDAO();
+    private UsuarioDAO dao = new UsuarioDAO();
 
     public TelaLogin() {
         setTitle("Login — Cadastro de Clientes");
-        setSize(400, 480);
+        setSize(400, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
         getContentPane().setBackground(COR_FUNDO);
         setLayout(new BorderLayout());
 
-        add(criarCabecalho(),  BorderLayout.NORTH);
+        add(criarCabecalho(), BorderLayout.NORTH);
         add(criarFormulario(), BorderLayout.CENTER);
-        add(criarRodape(),     BorderLayout.SOUTH);
+        add(criarRodape(), BorderLayout.SOUTH);
 
         setVisible(true);
     }
@@ -52,39 +70,44 @@ public class TelaLogin extends JFrame {
     }
 
     private JPanel criarFormulario() {
-        JPanel p = new JPanel(new GridLayout(5, 1, 0, 10));
+        JPanel p = new JPanel();
+        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
         p.setBackground(Color.WHITE);
         p.setBorder(new EmptyBorder(24, 30, 24, 30));
 
-        JPanel grpUsuario = new JPanel(new BorderLayout(0, 4));
-        grpUsuario.setOpaque(false);
+        // Usuário
         JLabel lblUsuario = new JLabel("Usuário");
         lblUsuario.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         lblUsuario.setForeground(COR_LABEL);
+        lblUsuario.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         txtUsuario = new JTextField();
-        txtUsuario.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        txtUsuario.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         txtUsuario.setForeground(COR_TEXTO);
+        txtUsuario.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        txtUsuario.setAlignmentX(Component.LEFT_ALIGNMENT);
         txtUsuario.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(200, 200, 220), 1),
-                new EmptyBorder(6, 10, 6, 10)
+                new EmptyBorder(8, 10, 8, 10)
         ));
-        grpUsuario.add(lblUsuario, BorderLayout.NORTH);
-        grpUsuario.add(txtUsuario, BorderLayout.CENTER);
 
-        JPanel grpSenha = new JPanel(new BorderLayout(0, 4));
-        grpSenha.setOpaque(false);
+        // Senha
         JLabel lblSenha = new JLabel("Senha");
         lblSenha.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         lblSenha.setForeground(COR_LABEL);
+        lblSenha.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         txtSenha = new JPasswordField();
-        txtSenha.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        txtSenha.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        txtSenha.setForeground(COR_TEXTO);
+        txtSenha.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        txtSenha.setAlignmentX(Component.LEFT_ALIGNMENT);
         txtSenha.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(200, 200, 220), 1),
-                new EmptyBorder(6, 10, 6, 10)
+                new EmptyBorder(8, 10, 8, 10)
         ));
-        grpSenha.add(lblSenha, BorderLayout.NORTH);
-        grpSenha.add(txtSenha, BorderLayout.CENTER);
 
+        // Botão entrar
         JButton btnEntrar = new JButton("Entrar");
         btnEntrar.setFont(new Font("Segoe UI", Font.BOLD, 13));
         btnEntrar.setBackground(COR_PRIMARIA);
@@ -92,15 +115,20 @@ public class TelaLogin extends JFrame {
         btnEntrar.setFocusPainted(false);
         btnEntrar.setBorderPainted(false);
         btnEntrar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnEntrar.setBorder(new EmptyBorder(10, 0, 10, 0));
+        btnEntrar.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        btnEntrar.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+        // Separador
         JLabel separador = new JLabel("Não tem conta?", SwingConstants.CENTER);
         separador.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         separador.setForeground(COR_LABEL);
+        separador.setAlignmentX(Component.LEFT_ALIGNMENT);
+        separador.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
 
+        // Botão registrar
         JButton btnRegistrar = new JButton("Criar conta");
         btnRegistrar.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        btnRegistrar.setBackground(new Color(245, 245, 250));
+        btnRegistrar.setBackground(COR_FUNDO);
         btnRegistrar.setForeground(COR_PRIMARIA);
         btnRegistrar.setFocusPainted(false);
         btnRegistrar.setBorder(BorderFactory.createCompoundBorder(
@@ -108,15 +136,29 @@ public class TelaLogin extends JFrame {
                 new EmptyBorder(8, 0, 8, 0)
         ));
         btnRegistrar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnRegistrar.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        btnRegistrar.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        p.add(grpUsuario);
-        p.add(grpSenha);
+        // Montar painel
+        p.add(lblUsuario);
+        p.add(Box.createVerticalStrut(4));
+        p.add(txtUsuario);
+        p.add(Box.createVerticalStrut(14));
+        p.add(lblSenha);
+        p.add(Box.createVerticalStrut(4));
+        p.add(txtSenha);
+        p.add(Box.createVerticalStrut(16));
         p.add(btnEntrar);
+        p.add(Box.createVerticalStrut(12));
         p.add(separador);
+        p.add(Box.createVerticalStrut(8));
         p.add(btnRegistrar);
 
         btnEntrar.addActionListener(e -> entrar());
-        btnRegistrar.addActionListener(e -> { dispose(); new TelaRegistro(); });
+        btnRegistrar.addActionListener(e -> {
+            dispose();
+            new TelaRegistro();
+        });
         txtSenha.addActionListener(e -> entrar());
 
         return p;
@@ -142,7 +184,7 @@ public class TelaLogin extends JFrame {
 
     private void entrar() {
         String usuario = txtUsuario.getText().trim();
-        String senha   = new String(txtSenha.getPassword());
+        String senha = new String(txtSenha.getPassword());
 
         if (usuario.isEmpty() || senha.isEmpty()) {
             JOptionPane.showMessageDialog(this,
